@@ -59,16 +59,24 @@ def show_courses():
         print('Σταθμισμένος μέσος όρος: ' , round(average, 2))
     else:
         print('Δεν υπάρχουν μαθήματα')
+        
 def save_courses():
     with open('grades.txt', 'w', encoding = 'utf-8') as file:
         for i in range(len(names)):
             file.write(f'{names[i]}, {grades[i]}, {ect[i]}\n')
 
+def clear_courses():
+    names.clear()
+    grades.clear()
+    ect.clear()
+    save_courses()
+
 load_courses()
 while True:
     print('1. Προβολή μαθημάτων μέσου όρου')
     print('2. Προσθήκη μαθήματων')
-    print('3. Έξοδος')
+    print('3. Διαγραφή μαθημάτων')
+    print('4. Έξοδος')
     i = input('Επίλεξε: ')
     if i =='1':
         show_courses()
@@ -76,8 +84,16 @@ while True:
         add_courses()
         save_courses()
     elif i =='3':
+        n = input('Είσαι σίγουρος ότι θες να σβήσεις τα μαθήματα; ν/ο ').strip().lower()
+        if n in ['ν', 'n']:
+            clear_courses()
+            print('Διαγράγθηκαν επιτυχώς')
+            print()
+        else:
+            print('Ακυρώθηκε')
+            print()
+    elif i == '4':
         save_courses()
         break
     else:
         print('Μη έγκυρη επιλογή')
-                
