@@ -2,8 +2,7 @@ grades = []
 ect = []
 names = []
 
-gsum = 0
-esum = 0
+
 def ask_number(question, min, max):
     while True:
         try:
@@ -22,47 +21,63 @@ def ask_question(question):
             return x
         else:                
             print('Μη δεκτό όνομα')
-try:
-    with open('grades.txt', 'r', encoding='utf-8') as file:
-        for line in file:
-            parts = line.strip().split(',')
-            names.append(parts[0])
-            grades.append(float(parts[1]))
-            ect.append(float(parts[2]))
-        print(f'Φορτώθηκαν {len(names)} μαθήματα')
-except FileNotFoundError:
-    print('Δεν βρέθηκαν αποθηκευμένα μαθήματα')
 
+def load_courses():
+    try:
+        with open('grades.txt', 'r', encoding='utf-8') as file:
+            for line in file:
+                parts = line.strip().split(',')
+                names.append(parts[0])
+                grades.append(float(parts[1]))
+                ect.append(float(parts[2]))
+            print(f'Φορτώθηκαν {len(names)} μαθήματα')
+    except FileNotFoundError:
+        print('Δεν βρέθηκαν αποθηκευμένα μαθήματα')
 
-x = int(ask_number('Πόσα μαθήματα θες να δηλώσεις; ', 0, 20))
-        
+def add_courses():
+    x = int(ask_number('Πόσα μαθήματα θες να δηλώσεις; ', 0, 20))
+    for i in range(x):
+        name = ask_question(f'Πως λέγεται το μάθημα {i+1}; ')
+        names.append(name)
+        k = ask_number(f'Βαθμός για το μάθημα {name}: ', 0, 10)
+        y = ask_number('ECTS SCORE: ', 0.1, 10)
+        grades.append(k)
+        ect.append(y)
+    print()
 
-for i in range(x):
-    name = ask_question(f'Πως λέγεται το μάθημα {i+1}; ')
-    names.append(name)
-    k = ask_number(f'Βαθμός για το μάθημα {name}: ', 0, 10)
-    y = ask_number('ECTS SCORE: ', 0.1, 10)
-    
-    
-    
-    grades.append(k)
-    ect.append(y)
-print()
-
-for i in range(len(names)):
-    print(f'{names[i]}: Βαθμός {grades[i]}, ECTS {ect[i]}')
-
-for i in range(len(grades)):
-    
-    gsum += grades[i]* ect[i]
-    esum += ect[i]
-print()
-if len(names)!=0:
-    average = gsum/ esum
-    print('Σταθμισμένος μέσος όρος: ' , round(average, 2))
-else:
-    print('Δεν υπάρχχουν μαθήματα')
-
-with open('grades.txt', 'w', encoding = 'utf-8') as file:
+def show_courses():
+    gsum = 0
+    esum = 0
     for i in range(len(names)):
-        file.write(f'{names[i]}, {grades[i]}, {ect[i]}\n')
+        print(f'{names[i]}: Βαθμός {grades[i]}, ECTS {ect[i]}')
+    for i in range(len(grades)):
+        gsum += grades[i]* ect[i]
+        esum += ect[i]
+    print()
+    if len(names)!=0:
+        average = gsum/ esum
+        print('Σταθμισμένος μέσος όρος: ' , round(average, 2))
+    else:
+        print('Δεν υπάρχουν μαθήματα')
+def save_courses():
+    with open('grades.txt', 'w', encoding = 'utf-8') as file:
+        for i in range(len(names)):
+            file.write(f'{names[i]}, {grades[i]}, {ect[i]}\n')
+
+load_courses()
+while True:
+    print('1. Προβολή μαθημάτων μέσου όρου')
+    print('2. Προσθήκη μαθήματων')
+    print('3. Έξοδος')
+    i = input('Επίλεξε: ')
+    if i =='1':
+        show_courses()
+    elif i == '2':
+        add_courses()
+        save_courses()
+    elif i =='3':
+        save_courses()
+        break
+    else:
+        print('Μη έγκυρη επιλογή')
+                
