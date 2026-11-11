@@ -70,13 +70,34 @@ def clear_courses():
     grades.clear()
     ect.clear()
     save_courses()
+    
+def needed_grade():
+    gsum = 0
+    esum = 0
+    for i in range(len(names)):
+        print(f'{names[i]}: Βαθμός {grades[i]}, ECTS {ect[i]}')
+    for i in range(len(grades)):
+        gsum += grades[i]* ect[i]
+        esum += ect[i]
+    print()
+    st  = int(input(('Ποιός είναι ο στόχος σου; ')))
+    e = int(input(('Ποσα ECTS έχεις; ')))
+    x = (st *(esum + e) - gsum) / e
+    if x > 10:
+        print('Ο μέσος όρος δεν είναι εφικτός με ένα μάθημα')
+    elif x <= 5:
+        print('Αρκεί απλώς να περάσεις το μάθημα με 5')
+    else:
+        print('Πρέπει να γράψεις: ', round(x , 2))
+    
 
 load_courses()
 while True:
     print('1. Προβολή μαθημάτων μέσου όρου')
     print('2. Προσθήκη μαθήματων')
     print('3. Διαγραφή μαθημάτων')
-    print('4. Έξοδος')
+    print('4. Τι βαθμό χρειάζομαι;')
+    print('5. Έξοδος')
     i = input('Επίλεξε: ')
     if i =='1':
         show_courses()
@@ -93,7 +114,13 @@ while True:
             print('Ακυρώθηκε')
             print()
     elif i == '4':
+        needed_grade()
+    elif i == '5':
         save_courses()
         break
     else:
         print('Μη έγκυρη επιλογή')
+    
+
+    
+    
