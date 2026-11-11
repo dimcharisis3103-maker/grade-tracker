@@ -80,7 +80,7 @@ def needed_grade():
         gsum += grades[i]* ect[i]
         esum += ect[i]
     print()
-    st  = int(input(('Ποιός είναι ο στόχος σου; ')))
+    st  = float(input(('Ποιός είναι ο στόχος σου; ')))
     e = int(input(('Ποσα ECTS έχεις; ')))
     x = (st *(esum + e) - gsum) / e
     if x > 10:
@@ -89,6 +89,7 @@ def needed_grade():
         print('Αρκεί απλώς να περάσεις το μάθημα με 5')
     else:
         print('Πρέπει να γράψεις: ', round(x , 2))
+    print()
     
 
 load_courses()
