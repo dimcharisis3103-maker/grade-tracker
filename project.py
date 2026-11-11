@@ -80,8 +80,8 @@ def needed_grade():
         gsum += grades[i]* ect[i]
         esum += ect[i]
     print()
-    st  = float(input(('Ποιός είναι ο στόχος σου; ')))
-    e = int(input(('Ποσα ECTS έχεις; ')))
+    st  = ask_number(('Ποιός είναι ο στόχος σου; '), 0 , 10)
+    e = ask_number(('Ποσα ECTS έχεις; '), 0.1, 10)
     x = (st *(esum + e) - gsum) / e
     if x > 10:
         print('Ο μέσος όρος δεν είναι εφικτός με ένα μάθημα')
